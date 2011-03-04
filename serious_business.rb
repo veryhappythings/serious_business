@@ -17,6 +17,6 @@ Dir.glob(File.join('sensors', sensors, '*')).each do |sensor|
   log.info "Received output:"
   log.info output.chomp
   redis.publish sensor, output
-  redis.put "backlog/#{sensor}", output
+  redis.set "backlog/#{sensor}", output
 end
 
