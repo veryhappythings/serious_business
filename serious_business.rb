@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
+require 'thread'
 require 'logger'
 require 'redis'
 
@@ -16,7 +17,7 @@ Dir.glob(File.join('sensors', sensors, '*')).each do |sensor|
   output = %x[#{sensor}]
   log.info "Received output:"
   log.info output.chomp
-  redis.publish sensor, output
-  redis.set "backlog/#{sensor}", output
+  redis.publish "live/#{sensor}", output
+  redis.lpush "backlog/#{sensor}", output
 end
 
