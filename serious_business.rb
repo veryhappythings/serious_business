@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
+require 'thread'
 require 'logger'
 require 'redis'
 
@@ -12,12 +13,14 @@ sensors = ARGV[0]
 redis = Redis.new
 
 log.info("Running #{sensors} sensors")
-Dir.glob(File.join('sensors', sensors, '*')).each do |sensor|
-  log.info "Running #{sensor}"
-  output = %x[#{sensor}]
-  log.info "Received output:"
-  log.info output.chomp
-  redis.publish sensor, output
-  redis.set "backlog/#{sensor}", output
+Dir.glob(File.join('sensors', sensors, '**', '*')).each do |sensor|
+  unless File.directory? sensor
+    log.info "Running #{sensor}"
+    output = %x[#{sensor}]
+    log.info "Received output:"
+    log.info output.chomp
+    redis.publish "live/#{sensor}", output
+    redis.lpush "backlog/#{sensor}", output
+  end
 end
 
