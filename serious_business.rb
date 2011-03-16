@@ -11,6 +11,7 @@ sensors = ARGV[0]
 
 redis = Redis.new
 
+log.info("Running #{sensors} sensors")
 Dir.glob(File.join('sensors', sensors, '*')).each do |sensor|
   log.info "Running #{sensor}"
   output = %x[#{sensor}]
