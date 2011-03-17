@@ -2,8 +2,10 @@ GEM
   remote: http://rubygems.org/
   specs:
     SystemTimer (1.2.2)
+    haml (3.0.25)
     rack (1.2.1)
     redis (2.1.1)
+    sass (3.1.0.alpha.249)
     sinatra (1.2.0)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
@@ -14,5 +16,7 @@ PLATFORMS
 
 DEPENDENCIES
   SystemTimer
+  haml
   redis
+  sass
   sinatra

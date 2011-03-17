@@ -1,7 +1,9 @@
 require 'rubygems'
 require 'sinatra'
 require 'redis'
-require 'yaml'
+require 'haml'
+
+require 'json'
 
 def get_list(redis, key)
   [].tap do |array|
@@ -17,6 +19,7 @@ get '/' do
   redis.keys('backlog/sensors/*').each do |key|
     sensors[key] = get_list redis, key
   end
-  sensors.to_yaml
+  @sensors = sensors.to_json
+  haml :index
 end
 

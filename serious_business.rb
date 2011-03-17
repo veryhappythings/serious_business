@@ -17,8 +17,9 @@ Dir.glob(File.join('sensors', sensors, '**', '*')).each do |sensor|
   unless File.directory? sensor
     log.info "Running #{sensor}"
     output = %x[#{sensor}]
+    output = output.to_i rescue output.chomp
     log.info "Received output:"
-    log.info output.chomp
+    log.info output
     redis.publish "live/#{sensor}", output
     redis.lpush "backlog/#{sensor}", output
   end
