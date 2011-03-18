@@ -27,7 +27,7 @@
         // Create chart scale
         var x_scale = d3.scale.linear()
           .domain([0, d3.max(data)])
-          .range(["0px", chart.attr("width")]);
+          .range([0, 420]);
         var y_scale = d3.scale.ordinal()
           .domain(data)
           .rangeBands([0, 120]);

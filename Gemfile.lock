@@ -3,12 +3,13 @@ GEM
   specs:
     SystemTimer (1.2.2)
     haml (3.0.25)
+    json (1.5.1)
     rack (1.2.1)
     redis (2.1.1)
     sass (3.1.0.alpha.249)
     sinatra (1.2.0)
       rack (~> 1.1)
-      tilt (>= 1.2.2, < 2.0)
+      tilt (< 2.0, >= 1.2.2)
     tilt (1.2.2)
 
 PLATFORMS
@@ -17,6 +18,7 @@ PLATFORMS
 DEPENDENCIES
   SystemTimer
   haml
+  json
   redis
   sass
   sinatra
