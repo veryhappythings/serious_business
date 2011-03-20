@@ -24,10 +24,8 @@
           // Shorten dates for nice labels
           $.each(labels, function(i) {
             var label = labels[i];
-            console.log(label);
-            console.log(Date.parse(label));
-            console.log(Date(label));
-            console.log(Date(Date.parse(label)));
+            var label_date = new Date(label);
+            labels[i] = label_date.getMonth() + '/' + label_date.getFullYear();
           });
 
           // Draw
