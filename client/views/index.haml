@@ -10,22 +10,35 @@
     :javascript
       $(document).ready(function() {
         sensors = #{@sensors};
-        $.each(sensors, function(i) {
-          console.log(i);
-          console.log(sensors[i]);
+        $.each(sensors, function(sensor) {
+          var labels = [];
+          var values = [];
 
-          var chart = $('<div id="'+i+'">').appendTo('body');
-          console.log(chart);
-          var r = Raphael(i, 640, 480);
+          // Collect values and labels
+          $.each(sensors[sensor], function(i) {
+            var details = $.parseJSON(sensors[sensor][i]);
+            labels.push(details.date);
+            values.push(details.output);
+          });
+
+          // Shorten dates for nice labels
+          $.each(labels, function(i) {
+            var label = labels[i];
+            console.log(label);
+            console.log(Date.parse(label));
+            console.log(Date(label));
+            console.log(Date(Date.parse(label)));
+          });
+
+          // Draw
+          var chart = $('<div id="'+sensor+'">').appendTo('body');
+          var r = Raphael(sensor, 640, 480);
           r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
-          r.g.text(200, 10, i).attr({"font-size": 20});
-          chart = r.g.barchart(10, 10, 300, 220, sensors[i], 0, {type: "sharp"});
-          chart.label(sensors[i], true);
+          r.g.text(200, 10, sensor).attr({"font-size": 20});
+          chart = r.g.barchart(10, 10, 300, 220, values, 0, {type: "sharp"});
+          chart.label(labels, true);
         });
       });
 
   %body
-    %h2
-      Here's a graph:
-    #graph
     %p=@sensors
