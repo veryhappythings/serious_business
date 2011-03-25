@@ -31,9 +31,15 @@
           // Draw
           var chart = $('<div id="'+sensor+'">').appendTo('body');
           var r = Raphael(sensor, 640, 480);
+          var fin = function () {
+            this.flag = r.g.popup(this.bar.x, this.bar.y, this.bar.value || "0").insertBefore(this);
+          };
+          var fout = function () {
+            this.flag.animate({opacity: 0}, 300, function () {this.remove();});
+          };
           r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
           r.g.text(200, 10, sensor).attr({"font-size": 20});
-          chart = r.g.barchart(10, 10, 300, 220, values, 0, {type: "sharp"});
+          chart = r.g.barchart(10, 10, 300, 220, values, 0, {type: "sharp"}).hover(fin, fout);
           chart.label(labels, true);
         });
       });
