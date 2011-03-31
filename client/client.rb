@@ -5,19 +5,23 @@ require 'haml'
 
 require 'json'
 
-def get_list(redis, key)
+def get_list(redis, key, options={})
   [].tap do |array|
-    (0..redis.llen(key)-1).each do |i|
+    unless options[:length] && redis.llen(key) > options[:length]
+      options[:length] = redis.llen(key)
+    end
+
+    (0..options[:length]-1).each do |i|
       array << redis.lindex(key, i)
     end
-  end
+  end.reverse
 end
 
 get '/' do
   redis = Redis.new
   sensors = {}
   redis.keys('backlog/sensors/*').each do |key|
-    sensors[key] = get_list redis, key
+    sensors[key] = get_list redis, key, :length => 10
   end
   @sensors = sensors.to_json
   haml :index
