@@ -1,7 +1,7 @@
 source :rubygems
 # Node
 gem 'redis'
-gem 'SystemTimer'
+#gem 'SystemTimer'
 
 # Client
 gem 'sinatra'
