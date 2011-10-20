@@ -20,7 +20,7 @@ end
 get '/' do
   redis = Redis.new
   sensors = {}
-  redis.keys('backlog/sensors/*').each do |key|
+  redis.keys('backlog:sensors:*').each do |key|
     sensors[key] = get_list redis, key, :length => 10
   end
   @sensors = sensors.to_json

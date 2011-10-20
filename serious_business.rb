@@ -25,8 +25,9 @@ Dir.glob(File.join('sensors', sensors, '**', '*')).each do |sensor|
     log.info "Received output:"
     log.info output
     result = {:date => date, :output => output}.to_json
-    redis.publish "live/#{sensor}", result
-    redis.lpush "backlog/#{sensor}", result
+    sensor = sensor.to_s.gsub /\//, ':'
+    redis.publish "live:#{sensor}", result
+    redis.lpush "backlog:#{sensor}", result
   end
 end
 
