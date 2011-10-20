@@ -12,7 +12,6 @@ spec/reports
 .config
 InstalledFiles
 .bundle
-.rvmrc
 
 # YARD artifacts
 .yardoc
