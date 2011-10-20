@@ -7,7 +7,17 @@
     %script{:src => '/js/raphael-min.js', :type => 'text/javascript'}
     %script{:src => '/js/g.raphael-min.js', :type => 'text/javascript'}
     %script{:src => '/js/g.bar-min.js', :type => 'text/javascript'}
+    %script{:src => '/js/g.line-min.js', :type => 'text/javascript'}
     :javascript
+
+      function range(n) {
+        result = [];
+        for (i = 0; i < n; i++) {
+           result.push(i);
+        };
+        return result;
+      };
+
       $(document).ready(function() {
         sensors = #{@sensors};
         $.each(sensors, function(sensor) {
@@ -39,8 +49,8 @@
           };
           r.g.txtattr.font = "12px 'Fontin Sans', Fontin-Sans, sans-serif";
           r.g.text(200, 10, sensor).attr({"font-size": 20});
-          chart = r.g.barchart(10, 10, 300, 220, values, 0, {type: "sharp"}).hover(fin, fout);
-          chart.label(labels, true);
+          chart = r.g.linechart(10, 10, 300, 220, range(values.length), values).hover(fin, fout);
+          //chart.label(labels, true);
         });
       });
 
