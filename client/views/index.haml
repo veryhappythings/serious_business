@@ -42,7 +42,7 @@
           var chart = $('<div id="'+sensor+'">').appendTo('body');
           var r = Raphael(sensor, 640, 480);
           var fin = function () {
-            this.flag = r.g.popup(this.bar.x, this.bar.y, this.bar.value || "0").insertBefore(this);
+            this.flag = r.g.popup(this.x, this.y, this.value || "0").insertBefore(this);
           };
           var fout = function () {
             this.flag.animate({opacity: 0}, 300, function () {this.remove();});
