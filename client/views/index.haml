@@ -40,14 +40,28 @@
           // Draw
           var chart = $('<div id="'+sensor+'">').appendTo('body');
           var r = Raphael(sensor, 640, 480);
-          var fin = function () {
-            this.flag = r.popup(this.x, this.y, this.value || "0").insertBefore(this);
+
+          var tag_in = function () {
+            this.tags = r.set();
+
+            for (var i = 0, ii = this.y.length; i < ii; i++) {
+              this.tags.push(r.tag(this.x, this.y[i], this.values[i], 160, 10).insertBefore(this).attr([{ fill: "#fff" }, { fill: this.symbols[i].attr("fill") }]));
+            }
           };
-          var fout = function () {
-            this.flag.animate({opacity: 0}, 300, function () {this.remove();});
+          var tag_out = function () {
+            this.tags && this.tags.remove();
           };
+
+          x_values = range(values.length);
+          y_values = values;
           r.text(200, 10, sensor).attr({"font-size": 20});
-          chart = r.linechart(10, 10, 300, 220, range(values.length), values).hover(fin, fout);
+          chart = r.linechart(
+            10, 10, // X, Y position on canvas
+            300, 220, // Width, height
+            x_values,
+            y_values,
+            { nostroke: false, axis: "0 0 1 1", symbol: "circle", smooth: false }
+          ).hoverColumn(tag_in, tag_out);
           //chart.label(labels, true);
         });
       });
