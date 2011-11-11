@@ -27,3 +27,7 @@ get '/' do
   haml :index
 end
 
+get '/demo' do
+  erb :demo
+end
+
