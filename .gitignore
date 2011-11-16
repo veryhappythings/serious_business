@@ -32,3 +32,6 @@ Icon?
 .*.sw[a-z]
 *.un~
 Session.vim
+
+sensors/daily/*.rb
+sensors/hourly/*.rb
