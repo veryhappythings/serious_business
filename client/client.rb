@@ -17,14 +17,23 @@ def get_list(redis, key, options={})
   end.reverse
 end
 
-get '/' do
+def get_json_sensors
   redis = Redis.new
   sensors = {}
   redis.keys('backlog:sensors:*').each do |key|
     sensors[key] = get_list redis, key, :length => 10
   end
-  @sensors = sensors.to_json
+  sensors.to_json
+end
+
+get '/' do
+  @sensors = get_json_sensors
   haml :index
+end
+
+get '/big_numbers' do
+  @sensors = get_json_sensors
+  haml :big_numbers
 end
 
 get '/demo' do
