@@ -33,5 +33,5 @@ Icon?
 *.un~
 Session.vim
 
-sensors/daily/*.rb
-sensors/hourly/*.rb
+sensors/daily/*
+sensors/hourly/*
