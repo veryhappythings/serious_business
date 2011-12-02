@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+body, html {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+wrapper {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+.bignumber {
+  text-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+  -webkit-text-stroke: 2px rgba(0, 0, 0, 0.6);
+  font: 150pt Helvetica;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  width: 50%;
+  box-sizing: border-box;
+}
+
+#passing {
+  padding-right: 5%;
+  color: #3c3;
+}
+
+#failing {
+  padding-left: 5%;
+  color: #f00;
+}
+
+.bignumber > span {
+  -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.5)));
+}
+
+.bignumber > span:after {
+  font: 30% arial;
+  vertical-align: middle;
+  margin-left: 1ex;
+}
+
+#passing > span:after {
+  content: '༄';
+}
+
+#failing > span:after {
+  content: 'ན';
+}
