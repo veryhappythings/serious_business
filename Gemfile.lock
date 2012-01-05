@@ -1,8 +1,32 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    api_cache (0.2.3)
+    domain_name (0.5.1)
+      unf (~> 0.0.3)
     haml (3.1.3)
+    httparty (0.8.1)
+      multi_json
+      multi_xml
     json (1.6.1)
+    mechanize (2.1)
+      domain_name (~> 0.5, >= 0.5.1)
+      net-http-digest_auth (~> 1.1, >= 1.1.1)
+      net-http-persistent (~> 2.3, >= 2.3.2)
+      nokogiri (~> 1.4)
+      ntlm-http (~> 0.1, >= 0.1.1)
+      webrobots (~> 0.0, >= 0.0.9)
+    multi_json (1.0.4)
+    multi_xml (0.4.1)
+    net-http-digest_auth (1.2)
+    net-http-persistent (2.3.3)
+    nokogiri (1.5.0)
+    ntlm-http (0.1.1)
+    octopi (0.4.5)
+      api_cache
+      httparty (>= 0.4.5)
+      mechanize (>= 0.9.3)
+      nokogiri (>= 1.3.1)
     rack (1.3.5)
     rack-protection (1.1.4)
       rack
@@ -13,6 +37,11 @@ GEM
       rack-protection (~> 1.1, >= 1.1.2)
       tilt (~> 1.3, >= 1.3.3)
     tilt (1.3.3)
+    unf (0.0.4)
+      unf_ext
+    unf_ext (0.0.4)
+    webrobots (0.0.12)
+      nokogiri (>= 1.4.4)
 
 PLATFORMS
   ruby
@@ -20,6 +49,8 @@ PLATFORMS
 DEPENDENCIES
   haml
   json
+  mechanize
+  octopi
   redis
   sass
   sinatra
