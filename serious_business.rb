@@ -16,7 +16,7 @@ sensors = ARGV[0]
 redis = Redis.new
 
 log.info("Running #{sensors} sensors")
-Dir.glob(File.join('sensors', sensors, '**', '*')).each do |sensor|
+Dir.glob(File.join('sensors', sensors, '**', '*.rb')).each do |sensor|
   unless File.directory? sensor
     date = DateTime.now
 
