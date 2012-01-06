@@ -12,3 +12,4 @@ gem 'json'
 # Sensors
 gem 'mechanize'
 gem 'octopi' # Github integration
+gem 'net-ping'
