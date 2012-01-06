@@ -13,7 +13,7 @@ if ARGV[0] == 'config'
 end
 ping = Net::Ping::HTTP.new('http://www.google.com')
 if ping.ping?
-  puts ping.duration
+  puts ping.duration * 1000
 else
   puts 0
 end
