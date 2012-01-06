@@ -40,3 +40,7 @@ get '/demo' do
   erb :demo
 end
 
+get '/alerts' do
+  @sensors = get_json_sensors
+  haml :alerts
+end
