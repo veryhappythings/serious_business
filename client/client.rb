@@ -31,6 +31,11 @@ get '/' do
   haml :index
 end
 
+get '/graphs' do
+  @sensors = get_json_sensors
+  haml :graphs
+end
+
 get '/big_numbers' do
   @sensors = get_json_sensors
   haml :big_numbers
