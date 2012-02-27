@@ -3,11 +3,13 @@ require 'json'
 
 if ARGV[0] == 'config'
   puts({
-    'alert' => {
-      'min' => 4,
-      'max' => 9
+    'random' =>{
+      'alert' => {
+        'min' => 4,
+        'max' => 9
+      }
     }
   }.to_json)
   exit
 end
-puts rand(10)
+puts({'random' => rand(10)}.to_json)

@@ -8,12 +8,32 @@ require 'json'
 
 require 'redis'
 
-log = Logger.new(STDOUT)
-log.level = Logger::DEBUG
+class SeriousBusiness
+  @@log = Logger.new(STDOUT)
+  @@log.level = Logger::DEBUG
+
+  def self.log
+    @@log
+  end
+end
+log = SeriousBusiness.log
 
 sensors = ARGV[0]
 
 redis = Redis.new
+
+def process_config(config)
+  JSON.parse(config.chomp) rescue {}
+end
+
+def process_sensor(sensor)
+  begin
+    JSON.parse(sensor.chomp)
+  rescue Exception => ex
+    SeriousBusiness.log.error(ex)
+    {}
+  end
+end
 
 log.info("Running #{sensors} sensors")
 Dir.glob(File.join('sensors', sensors, '**', '*.rb')).each do |sensor|
@@ -23,32 +43,42 @@ Dir.glob(File.join('sensors', sensors, '**', '*.rb')).each do |sensor|
     log.info "Running #{sensor}"
 
     config = %x[#{sensor} config]
-    config = JSON.parse(config.chomp) rescue nil
+    config = process_config(config)
     log.info 'Config:'
     log.info config
 
     output = %x[#{sensor}]
-    output = output.to_i rescue output.chomp
+    output = process_sensor(output)
     log.info "Received output:"
     log.info output
 
-    result = {:date => date, :output => output}
+    output.each_pair do |key, data|
+      config = config[key]
+      result = {
+        :date => date,
+        :output => data
+      }
 
-    if config
-      if config['alert']
-        if output < config['alert']['min'] || output > config['alert']['max'].to_i
-          result[:alert] = true
+      if config
+        if config['alert']
+          if config['alert']['min'] && data < config['alert']['min'].to_i
+            result[:alert] = true
+          end
+          if config['alert']['max'] && data > config['alert']['max'].to_i
+            result[:alert] = true
+          end
         end
       end
+
+
+      result = result.to_json
+      log.info result
+
+      sensor = sensor.to_s.gsub /\//, ':'
+      sensor = sensor.to_s.gsub /.rb$/, ''
+      redis.publish "live:#{sensor}:#{key}", result
+      redis.lpush "backlog:#{sensor}:#{key}", result
     end
-
-
-    result = result.to_json
-    log.info result
-
-    sensor = sensor.to_s.gsub /\//, ':'
-    redis.publish "live:#{sensor}", result
-    redis.lpush "backlog:#{sensor}", result
   end
 end
 

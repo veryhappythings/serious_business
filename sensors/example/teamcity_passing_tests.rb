@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
+require 'json'
 require 'logger'
 require 'mechanize'
 require 'yaml'
@@ -42,4 +43,4 @@ tests.each_pair do |proj, results|
   end
 end
 
-puts total_passed
+puts({'passing_tests' => total_passed}.to_json)

@@ -4,16 +4,20 @@ require 'net/ping'
 
 if ARGV[0] == 'config'
   puts({
-    'alert' => {
-      'min' => 1,
-      'max' => 9000
+    'google_ping' => {
+      'alert' => {
+        'min' => 1,
+        'max' => 9000
+      }
     }
   }.to_json)
   exit
 end
 ping = Net::Ping::HTTP.new('http://www.google.com')
 if ping.ping?
-  puts ping.duration * 1000
+  result = ping.duration * 1000
 else
-  puts 0
+  result = 0
 end
+
+puts({'google_ping' => result.to_i}.to_json)
