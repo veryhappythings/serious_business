@@ -19,17 +19,20 @@
       .value {
         padding-left: 10px;
       }
+
     %script{:src => '/js/jquery-1.5.1.min.js', :type => 'text/javascript'}
     :javascript
       display_sensor = function(name, sensor) {
+        // Process
         var labels = [];
         var values = [];
         $.each(sensor, function(i) {
-          var details = $.parseJSON(sensor[i]);
+          var details = sensor[i];
           labels.push(details.date);
           values.push(details.output);
         });
 
+        // Display
         var sensor_div = $('<div id="'+name+'">').appendTo('wrapper');
         var data = $('<span>');
         data.addClass('name')
@@ -45,9 +48,11 @@
         sensors = #{@sensors};
         $.each(sensors, function(name) {
           sensor = sensors[name];
-          value = $.parseJSON(sensor[sensor.length-1]);
+          data = sensor['values'];
+          config = sensor['config'];
+          value = data[data.length-1];
 
-          display_sensor(name, sensor);
+          display_sensor(name, data);
         });
       });
 

@@ -78,6 +78,7 @@ Dir.glob(File.join('sensors', sensors, '**', '*.rb')).each do |sensor|
       sensor = sensor.to_s.gsub /.rb$/, ''
       redis.publish "live:#{sensor}:#{key}", result
       redis.lpush "backlog:#{sensor}:#{key}", result
+      redis.set "config:#{sensor}:#{key}", config
     end
   end
 end

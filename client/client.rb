@@ -12,16 +12,23 @@ def get_list(redis, key, options={})
     end
 
     (0..options[:length]-1).each do |i|
-      array << redis.lindex(key, i)
+      array << JSON.parse(redis.lindex(key, i))
     end
   end.reverse
+end
+
+def get_config(redis, key)
+  redis.get(key.gsub(/^backlog/, 'config'))
 end
 
 def get_json_sensors
   redis = Redis.new
   sensors = {}
   redis.keys('backlog:sensors:*').each do |key|
-    sensors[key] = get_list redis, key, :length => 10
+    sensors[key] = {
+      'values' => get_list(redis, key, :length => 10),
+      'config' => get_config(redis, key)
+    }
   end
   sensors.to_json
 end

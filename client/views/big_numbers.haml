@@ -23,8 +23,8 @@
 
       $(document).ready(function() {
         sensors = #{@sensors};
-        display_sensor('passing', sensors['backlog:sensors:hourly:passing_tests.rb']);
-        display_sensor('failing', sensors['backlog:sensors:hourly:failing_tests.rb']);
+        display_sensor('passing', sensors['backlog:sensors:hourly:passing_tests.rb']['values']);
+        display_sensor('failing', sensors['backlog:sensors:hourly:failing_tests.rb']['values']);
       });
 
   %body

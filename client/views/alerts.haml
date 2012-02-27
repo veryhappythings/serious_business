@@ -26,9 +26,11 @@
         sensors = #{@sensors};
         $.each(sensors, function(name) {
           sensor = sensors[name];
-          value = $.parseJSON(sensor[sensor.length-1]);
+          data = sensor['values'];
+          config = sensor['config'];
+          value = $.parseJSON(data[data.length-1]);
           if (value.alert) {
-            display_sensor(name, sensor);
+            display_sensor(name, data);
           };
         });
       });

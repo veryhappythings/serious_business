@@ -24,8 +24,8 @@
           var values = [];
 
           // Collect values and labels
-          $.each(sensors[sensor], function(i) {
-            var details = $.parseJSON(sensors[sensor][i]);
+          $.each(sensors[sensor]['values'], function(i) {
+            var details = $.parseJSON(sensors[sensor]['values'][i]);
             labels.push(details.date);
             values.push(details.output);
           });
