@@ -53,18 +53,18 @@ Dir.glob(File.join('sensors', sensors, '**', '*.rb')).each do |sensor|
     log.info output
 
     output.each_pair do |key, data|
-      config = config[key]
+      sensor_config = config[key]
       result = {
         :date => date,
         :output => data
       }
 
-      if config
-        if config['alert']
-          if config['alert']['min'] && data < config['alert']['min'].to_i
+      if sensor_config
+        if sensor_config['alert']
+          if sensor_config['alert']['min'] && data < sensor_config['alert']['min'].to_i
             result[:alert] = true
           end
-          if config['alert']['max'] && data > config['alert']['max'].to_i
+          if sensor_config['alert']['max'] && data > sensor_config['alert']['max'].to_i
             result[:alert] = true
           end
         end
@@ -78,7 +78,7 @@ Dir.glob(File.join('sensors', sensors, '**', '*.rb')).each do |sensor|
       sensor = sensor.to_s.gsub /.rb$/, ''
       redis.publish "live:#{sensor}:#{key}", result
       redis.lpush "backlog:#{sensor}:#{key}", result
-      redis.set "config:#{sensor}:#{key}", config
+      redis.set "config:#{sensor}:#{key}", sensor_config
     end
   end
 end
