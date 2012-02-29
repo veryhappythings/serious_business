@@ -53,7 +53,7 @@ Dir.glob(File.join('sensors', sensors, '**', '*.rb')).each do |sensor|
     log.info output
 
     output.each_pair do |key, data|
-      sensor_config = config[key]
+      sensor_config = (config.has_key?(key) ? config[key] : {})
       result = {
         :date => date,
         :output => data
@@ -78,7 +78,7 @@ Dir.glob(File.join('sensors', sensors, '**', '*.rb')).each do |sensor|
       sensor = sensor.to_s.gsub /.rb$/, ''
       redis.publish "live:#{sensor}:#{key}", result
       redis.lpush "backlog:#{sensor}:#{key}", result
-      redis.set "config:#{sensor}:#{key}", sensor_config
+      redis.set "config:#{sensor}:#{key}", sensor_config.to_json
     end
   end
 end

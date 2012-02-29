@@ -18,7 +18,7 @@ def get_list(redis, key, options={})
 end
 
 def get_config(redis, key)
-  redis.get(key.gsub(/^backlog/, 'config'))
+  JSON.parse(redis.get(key.gsub(/^backlog/, 'config')))
 end
 
 def get_json_sensors

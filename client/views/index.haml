@@ -22,7 +22,7 @@
 
     %script{:src => '/js/jquery-1.5.1.min.js', :type => 'text/javascript'}
     :javascript
-      display_sensor = function(name, sensor) {
+      display_sensor = function(name, sensor, config) {
         // Process
         var labels = [];
         var values = [];
@@ -31,13 +31,17 @@
           labels.push(details.date);
           values.push(details.output);
         });
+        var display_name = name;
+        if (config['name']) {
+          display_name = config.name;
+        };
 
         // Display
         var sensor_div = $('<div id="'+name+'">').appendTo('wrapper');
         var data = $('<span>');
         data.addClass('name')
         data.appendTo(sensor_div);
-        data.append(name);
+        data.append(display_name);
         var value = $('<span>');
         value.addClass('value');
         value.appendTo(sensor_div);
@@ -52,7 +56,7 @@
           config = sensor['config'];
           value = data[data.length-1];
 
-          display_sensor(name, data);
+          display_sensor(name, data, config);
         });
       });
 
