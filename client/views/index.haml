@@ -50,7 +50,13 @@
 
       $(document).ready(function() {
         sensors = #{@sensors};
-        $.each(sensors, function(name) {
+
+        sorted_names = [];
+        for (var key in sensors) sorted_names.push(key);
+        sorted_names.sort();
+
+        $.each(sorted_names, function(index) {
+          name = sorted_names[index];
           sensor = sensors[name];
           data = sensor['values'];
           config = sensor['config'];
