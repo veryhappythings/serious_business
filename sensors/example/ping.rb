@@ -13,11 +13,24 @@ if ARGV[0] == 'config'
   }.to_json)
   exit
 end
-ping = Net::Ping::HTTP.new('http://www.google.com')
-if ping.ping?
-  result = ping.duration * 1000
-else
-  result = 0
+
+sites = {
+  'google_ping' => 'http://www.google.com'
+}
+
+result = {}
+sites.each_pair do |key, address|
+  if address =~ /^[a-z]/
+    ping = Net::Ping::HTTP.new(address)
+  else
+    # Account for IP addresses
+    ping = Net::Ping::External.new(address)
+  end
+  if ping.ping?
+    result[key] = ping.duration * 1000
+  else
+    result[key] = 0
+  end
 end
 
-puts({'google_ping' => result.to_i}.to_json)
+puts(result.to_json)
