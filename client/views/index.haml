@@ -13,16 +13,29 @@
         padding-bottom: 10px;
         padding-left: 10px;
       }
+      .odd {
+        background: #ddd;
+      }
+      .sensor {
+        padding-top: 3px;
+        height: 25px;
+      }
       .name {
         padding-left: 20px;
+        float: left;
+        position: absolute;
       }
       .value {
-        padding-left: 10px;
+        padding-left: 400px;
+        float: left;
+      }
+      .clear {
+        clear: both;
       }
 
     %script{:src => '/js/jquery-1.5.1.min.js', :type => 'text/javascript'}
     :javascript
-      display_sensor = function(name, sensor, config) {
+      display_sensor = function(name, sensor, config, odd) {
         // Process
         var labels = [];
         var values = [];
@@ -37,7 +50,11 @@
         };
 
         // Display
-        var sensor_div = $('<div id="'+name+'">').appendTo('wrapper');
+
+        var sensor_div = $('<div class="sensor" id="'+name+'">').appendTo('wrapper');
+        if (odd) {
+          sensor_div.addClass('odd');
+        };
         var data = $('<span>');
         data.addClass('name')
         data.appendTo(sensor_div);
@@ -46,6 +63,8 @@
         value.addClass('value');
         value.appendTo(sensor_div);
         value.append(values[values.length-1]);
+        $('<div class="clear">').appendTo('wrapper');
+
       };
 
       $(document).ready(function() {
@@ -61,8 +80,9 @@
           data = sensor['values'];
           config = sensor['config'];
           value = data[data.length-1];
+          odd = (index % 2 == 0);
 
-          display_sensor(name, data, config);
+          display_sensor(name, data, config, odd);
         });
       });
 
