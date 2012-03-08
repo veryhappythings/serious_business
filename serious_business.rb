@@ -36,7 +36,7 @@ def process_sensor(sensor)
 end
 
 log.info("Running #{sensors} sensors")
-Dir.glob(File.join('sensors', sensors, '**', '*.rb')).each do |sensor|
+Dir.glob(File.join(File.dirname(__FILE__), 'sensors', sensors, '**', '*.rb')).each do |sensor|
   unless File.directory? sensor
     date = DateTime.now
 
