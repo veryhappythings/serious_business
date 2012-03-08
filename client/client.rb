@@ -2,7 +2,6 @@ require 'rubygems'
 require 'sinatra'
 require 'redis'
 require 'haml'
-
 require 'json'
 
 def get_list(redis, key, options={})

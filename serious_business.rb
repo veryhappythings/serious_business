@@ -5,7 +5,6 @@ require 'date'
 require 'thread'
 require 'logger'
 require 'json'
-
 require 'redis'
 
 class SeriousBusiness

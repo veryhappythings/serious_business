@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'sinatra'
-require 'client'
+require './client.rb'
 
 run Sinatra::Application
 
