@@ -3,7 +3,7 @@ require 'redis'
 
 redis = Redis.new
 
-redis.psubscribe('sensors/*') do |on|
+redis.psubscribe('live:*') do |on|
   on.psubscribe do |channel, subscriptions|
     puts "Subscribed to #{channel} (#{subscriptions} subscriptions)"
   end
