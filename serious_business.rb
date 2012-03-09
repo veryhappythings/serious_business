@@ -6,6 +6,7 @@ require 'thread'
 require 'logger'
 require 'json'
 require 'redis'
+require 'pathname'
 
 class SeriousBusiness
   @@log = Logger.new(STDOUT)
@@ -35,9 +36,12 @@ def process_sensor(sensor)
 end
 
 log.info("Running #{sensors} sensors")
+business_path = Pathname.new(File.dirname(__FILE__))
 Dir.glob(File.join(File.dirname(__FILE__), 'sensors', sensors, '**', '*.rb')).each do |sensor|
   unless File.directory? sensor
     date = DateTime.now
+
+    sensor = Pathname.new(sensor).relative_path_from(business_path).to_s
 
     log.info "Running #{sensor}"
 
