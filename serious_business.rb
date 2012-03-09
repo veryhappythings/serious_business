@@ -41,7 +41,7 @@ Dir.glob(File.join(File.dirname(__FILE__), 'sensors', sensors, '**', '*.rb')).ea
   unless File.directory? sensor
     date = DateTime.now
 
-    sensor = Pathname.new(sensor).relative_path_from(business_path).to_s
+    sensor_name = Pathname.new(sensor).relative_path_from(business_path).to_s
 
     log.info "Running #{sensor}"
 
@@ -77,11 +77,11 @@ Dir.glob(File.join(File.dirname(__FILE__), 'sensors', sensors, '**', '*.rb')).ea
       result = result.to_json
       log.info result
 
-      sensor = sensor.to_s.gsub /\//, ':'
-      sensor = sensor.to_s.gsub /.rb$/, ''
-      redis.publish "live:#{sensor}:#{key}", result
-      redis.lpush "backlog:#{sensor}:#{key}", result
-      redis.set "config:#{sensor}:#{key}", sensor_config.to_json
+      sensor_name = sensor_name.to_s.gsub /\//, ':'
+      sensor_name = sensor_name.to_s.gsub /.rb$/, ''
+      redis.publish "live:#{sensor_name}:#{key}", result
+      redis.lpush "backlog:#{sensor_name}:#{key}", result
+      redis.set "config:#{sensor_name}:#{key}", sensor_config.to_json
     end
   end
 end
