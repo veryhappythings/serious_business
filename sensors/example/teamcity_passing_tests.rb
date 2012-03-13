@@ -6,6 +6,20 @@ require 'logger'
 require 'mechanize'
 require 'yaml'
 
+if ARGV[0] == 'config'
+  puts({
+    'passed' => {
+    'name' => 'Passing tests',
+    'category' => 'Teamcity',
+  },
+  'failed' => {
+    'name' => 'Failing tests',
+    'category' => 'Teamcity',
+  }
+  }.to_json)
+  exit
+end
+
 DIR = File.dirname(File.expand_path(__FILE__))
 config = YAML::load_file("#{DIR}/teamcity.yaml")
 

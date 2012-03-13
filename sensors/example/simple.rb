@@ -4,6 +4,7 @@ require 'json'
 if ARGV[0] == 'config'
   puts({
     'random' =>{
+      'category' => 'example sensors',
       'alert' => {
         'min' => 4,
         'max' => 9

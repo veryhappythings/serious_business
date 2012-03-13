@@ -37,6 +37,11 @@ get '/' do
   haml :index
 end
 
+get '/sensors' do
+  content_type :json
+  get_json_sensors
+end
+
 get '/graphs' do
   @sensors = get_json_sensors
   haml :graphs

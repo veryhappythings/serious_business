@@ -5,6 +5,8 @@ require 'net/ping'
 if ARGV[0] == 'config'
   puts({
     'google_ping' => {
+      'category' => 'example sensors',
+      'name' => 'ping',
       'alert' => {
         'min' => 1,
         'max' => 9000

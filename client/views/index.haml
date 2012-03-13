@@ -3,40 +3,10 @@
   %head
     %title Serious Business
     %link{:href => '/css/cssreset-min.css', :media => 'screen', :rel => 'stylesheet', :type => 'text/css'}
-    :css
-      body {
-        font-family: verdana;
-      }
-      h1 {
-        font-size: 20px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        padding-left: 10px;
-      }
-      .odd {
-        background: #ddd;
-      }
-      .sensor {
-        padding-top: 3px;
-        height: 25px;
-      }
-      .name {
-        padding-left: 20px;
-        float: left;
-        position: absolute;
-      }
-      .value {
-        padding-left: 400px;
-        float: left;
-      }
-      .clear {
-        clear: both;
-      }
-
+    %link{:href => '/css/screen.less', :media => 'screen', :type => 'stylesheet/css', :rel => 'stylesheet/less'}
     %script{:src => '/js/jquery-1.5.1.min.js', :type => 'text/javascript'}
     :javascript
-      display_sensor = function(name, sensor, config, odd) {
-        // Process
+      sensorElement = function(name, sensor, config) {
         var labels = [];
         var values = [];
         $.each(sensor, function(i) {
@@ -44,49 +14,62 @@
           labels.push(details.date);
           values.push(details.output);
         });
-        var display_name = name;
-        if (config['name']) {
-          display_name = config.name;
-        };
 
-        // Display
-
-        var sensor_div = $('<div class="sensor" id="'+name+'">').appendTo('wrapper');
-        if (odd) {
-          sensor_div.addClass('odd');
-        };
-        var data = $('<span>');
-        data.addClass('name')
-        data.appendTo(sensor_div);
-        data.append(display_name);
-        var value = $('<span>');
-        value.addClass('value');
-        value.appendTo(sensor_div);
-        value.append(values[values.length-1]);
-        $('<div class="clear">').appendTo('wrapper');
-
+        return $('<div>').
+          addClass('sensor').
+          attr('id', name).
+          append(
+            $('<span>').
+              addClass('category').
+              append(config.category)
+          ).
+          append(
+            $('<span>').
+              addClass('name').
+              append(config.name || name)
+          ).
+          append(
+            $('<span>').
+              addClass('value').
+              append(
+                $('<span>').
+                  append(values[values.length - 1])
+              )
+          );
       };
 
-      $(document).ready(function() {
-        sensors = #{@sensors};
+      function update(sensors) {
+        sortedNames = [];
+        for (var key in sensors) sortedNames.push(key);
+        sortedNames.sort();
 
-        sorted_names = [];
-        for (var key in sensors) sorted_names.push(key);
-        sorted_names.sort();
-
-        $.each(sorted_names, function(index) {
-          name = sorted_names[index];
+        $('#wrapper').html('');
+        $.each(sortedNames, function(index, name) {
           sensor = sensors[name];
           data = sensor['values'];
           config = sensor['config'];
           value = data[data.length-1];
-          odd = (index % 2 == 0);
 
-          display_sensor(name, data, config, odd);
+          $('#wrapper').append(sensorElement(name, data, config));
         });
+      }
+
+      $(document).ready(function() {
+        setInterval(function() {
+          $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/sensors',
+            success: update
+          })
+        },
+        30 * 1000);
+      });
+
+      $(document).ready(function() {
+        update(#{@sensors});
       });
 
   %body
-    %h1
-      Serious Business
-    %wrapper
+    #wrapper
+    %script{:type => 'text/javascript', :src => 'http://lesscss.googlecode.com/files/less-1.2.2.min.js'}
