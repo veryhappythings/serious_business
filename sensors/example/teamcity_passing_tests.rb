@@ -57,4 +57,9 @@ tests.each_pair do |proj, results|
   end
 end
 
-puts({'passing_tests' => total_passed}.to_json)
+result = {
+  'passed' => total_passed,
+  'failed' => total_failed
+}
+
+puts result.to_json
