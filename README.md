@@ -10,7 +10,7 @@ Installing etc
 ==============
 
 * Clone the repo
-* Install [redis](http://redis.io)
+* Install [redis](http://redis.io) - install from source, you'll need an up to date version
 * Get your ruby environment set up - I use [RVM](http://rvm.io)
 * Run the app from the command line or set it up to run through passenger.
 * Cron your sensors to run as often as you'd like.
