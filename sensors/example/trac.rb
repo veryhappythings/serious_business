@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
 require 'logger'
 require 'mechanize'
 require 'json'
